@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Car Website</title>
+    <link rel="stylesheet" defer href="/static/styles.css" />
+  </head>
+  <body>
+    <div class="header">
+      <button class="Connection">Connection: Off</button>
+      <button class="Buzzer">Buzzer: Off</button>
+      <button class="Led">LED: Off</button>
+      <button class="camera">Camera: Off</button>
+      <div class="LCD">LCD: <input type="text" value="" /></div>
+    </div>
+    <div class="container">
+      <!-- <button class="Power">Power: Off</button> -->
+      <!-- <button class="LineTracking">Line Tracking: Off</button> -->
+      <div class="keyPad">
+        <button class="up">Up</button>
+        <button class="left">Left</button>
+        <button class="down">Down</button>
+        <button class="right">Right</button>
+      </div>
+    </div>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+      let toggleLED = false;
+      let toggleBuzzer = false;
+      let toggleConnection = false;
+
+      $(function (e) {
+        $("body").on("keydown", (e) => {
+          if (toggleConnection === true) {
+            console.log(e.key);
+            if (e.key === "w") {
+              $.getJSON("/forward", (data) => {});
+            } else if (e.key === "a") {
+              $.getJSON("/left", (data) => {});
+            } else if (e.key === "s") {
+              $.getJSON("/backward", (data) => {});
+            } else if (e.key === "d") {
+              $.getJSON("/right", (data) => {});
+            }
+          }
+        });
+
+        $("body").on("keyup", (e) => {
+          if (toggleConnection === true) {
+            console.log(e.key);
+            if (e.key === "w") {
+              $.getJSON("/stopmotor", (data) => {});
+            } else if (e.key === "a") {
+              $.getJSON("/stopmotor", (data) => {});
+            } else if (e.key === "s") {
+              $.getJSON("/stopmotor", (data) => {});
+            } else if (e.key === "d") {
+              $.getJSON("/stopmotor", (data) => {});
+            }
+          }
+        });
+
+        // Buttons
+        $("button.up").mousedown((e) => {});
+
+        $("button.Connection").on("click", (e) => {
+          e.preventDefault();
+          toggleConnection = !toggleConnection;
+          if (toggleConnection === true) {
+            $("button.Connection").text("Connection: On");
+          } else {
+            $("button.Connection").text("Connection: Off");
+          }
+          // $.getJSON('/toggleBuzzer', (data) => {});
+          return false;
+        });
+
+        $("button.Buzzer").on("click", (e) => {
+          e.preventDefault();
+          toggleBuzzer = !toggleBuzzer;
+          if (toggleBuzzer === true) {
+            $("button.Buzzer").text("Buzzer: On");
+          } else {
+            $("button.Buzzer").text("Buzzer: Off");
+          }
+          $.getJSON("/toggleBuzzer", (data) => {});
+          return false;
+        });
+
+        $("button.Led").on("click", (e) => {
+          e.preventDefault();
+          toggleLED = !toggleLED;
+          if (toggleLED === true) {
+            $("button.Led").text("LED: On");
+          } else {
+            $("button.Led").text("LED: Off");
+          }
+          $.getJSON("/toggleLED", (data) => {});
+          return false;
+        });
+      });
+    </script>
+  </body>
+</html>
